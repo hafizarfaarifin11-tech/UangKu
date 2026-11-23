@@ -28,7 +28,7 @@ jobs:
         with:
           packages: 'platform-tools'
 
-      - name: Install Android SDK packages
+      - name: Install Android SDK
         run: |
           sdkmanager "platforms;android-36" "build-tools;36.0.0"
 
@@ -37,31 +37,23 @@ jobs:
         with:
           gradle-version: '8.13'
 
-      - name: Find Gradle Project
+      - name: Extract UangKu Project
         run: |
-          PROJECT_DIR=$(find . -type f \( -name "settings.gradle" -o -name "settings.gradle.kts" \) -not -path "*/.gradle/*" -print -quit)
+          unzip -q UangKu-EWallet-Android-CI.zip -d project
 
-          if [ -z "$PROJECT_DIR" ]; then
-            echo "Gradle project tidak ditemukan!"
-            echo "Isi repository:"
-            find . -maxdepth 4 -type f | sort
-            exit 1
-          fi
+          echo "Checking project files..."
+          ls -la project/UangKu-EWallet
 
-          PROJECT_DIR=$(dirname "$PROJECT_DIR")
-
-          echo "Project ditemukan di: $PROJECT_DIR"
-          echo "GRADLE_PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
+          test -f project/UangKu-EWallet/settings.gradle
 
       - name: Build UangKu APK
-        run: |
-          cd "$GRADLE_PROJECT_DIR"
-          gradle --no-daemon assembleDebug
+        working-directory: project/UangKu-EWallet
+        run: gradle --no-daemon assembleDebug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: UangKu-debug-apk
-          path: '**/app/build/outputs/apk/debug/app-debug.apk'
+          path: project/UangKu-EWallet/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           
