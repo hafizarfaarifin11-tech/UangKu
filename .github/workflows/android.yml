@@ -37,20 +37,26 @@ jobs:
         with:
           gradle-version: '8.13'
 
-      - name: Extract UangKu Project
+      - name: Extract UangKu
         run: |
           unzip -q UangKu-EWallet-Android-CI.zip -d project
-
-          echo "Checking project files..."
-          ls -la project/UangKu-EWallet
-
           test -f project/UangKu-EWallet/settings.gradle
+
+      - name: Restore Debug Signing Key
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: uangku-debug-keystore-v1
 
       - name: Build UangKu APK
         working-directory: project/UangKu-EWallet
         run: gradle --no-daemon assembleDebug
 
-      - name: Upload APK artifact
+      - name: Generate SHA-1 Fingerprint
+        working-directory: project/UangKu-EWallet
+        run: gradle --no-daemon signingReport
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: UangKu-debug-apk
