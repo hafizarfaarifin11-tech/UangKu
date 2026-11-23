@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "652273712043",
+    "project_id": "uangku-f01b5",
+    "storage_bucket": "uangku-f01b5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:652273712043:android:5751cdfc0987bb586c70ee",
+        "android_client_info": {
+          "package_name": "id.uangku.ewallet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcH7-CR44_11PqxLem7H5W0wGmX1K8JfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
