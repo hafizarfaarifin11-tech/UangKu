@@ -42,6 +42,12 @@ jobs:
           unzip -q UangKu-EWallet-Android-CI.zip -d project
           test -f project/UangKu-EWallet/settings.gradle
 
+      - name: Add Firebase config
+        run: |
+          test -f google-services.json
+          cp google-services.json project/UangKu-EWallet/app/google-services.json
+          test -f project/UangKu-EWallet/app/google-services.json
+
       - name: Restore Debug Signing Key
         uses: actions/cache@v4
         with:
